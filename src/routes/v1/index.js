@@ -5,14 +5,23 @@ import {
   AuthController,
   WatchlistController,
 } from "../../controllers/index.js";
+import { verifyToken } from "../../middlewares/auth_middleware.js";
 router.post("/signup", AuthController.registerUserController);
 router.post("/login", AuthController.loginUserController);
-router.post("/createwatchlist", WatchlistController.createWatchlistController);
-router.get("/getwatchlistdata", WatchlistController.getWatchlistController);
-router.get("/getwatchlistname", WatchlistController.getWatchlistNameController);
-//watchlist
-// watchlist_stocks
-// user hits url with the user id and
-// watchlist name watch list gets created send back the created watchlist [watchlists table]
-//  user hits url with watchlist id and stock
+router.post(
+  "/createwatchlist",
+  verifyToken,
+  WatchlistController.createWatchlistController
+);
+router.get(
+  "/getwatchlistdata",
+
+  WatchlistController.getWatchlistController
+);
+router.get(
+  "/getwatchlistname",
+  verifyToken,
+  WatchlistController.getWatchlistNameController
+);
+
 export { router };

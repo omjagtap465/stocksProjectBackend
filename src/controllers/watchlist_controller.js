@@ -12,16 +12,14 @@ const createWatchlistController = async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, watchlist, "Watchlist  Created Successfully"));
   } catch (error) {
-    // Handle errors
     if (error instanceof ApiError) {
-      // If the error is an instance of ApiError, rethrow it
       console.log(error);
       throw error;
     } else if (error instanceof ApiResponse) {
       return res
         .status(400)
         .json(
-          new ApiResponse(
+          -new ApiResponse(
             error.statusCode,
             error.data,
             error.message,
@@ -60,8 +58,8 @@ const getWatchlistController = async (req, res) => {
 };
 const getWatchlistNameController = async (req, res) => {
   try {
-    const { userid } = req.body;
-    const watchlist = await watchlistService.getWatchlistName(userid);
+    const { user_id } = req.body;
+    const watchlist = await watchlistService.getWatchlistName(user_id);
 
     return res
       .status(200)

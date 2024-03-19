@@ -39,13 +39,11 @@ class UserService {
   async login(userData) {
     try {
       const { email, username, password } = userData;
-      // console.log(email);
 
       if (!(username || email)) {
         throw new ApiError(400, "username or email is required");
       }
 
-      // // Check db for the user
       const user = await this.UserRepository.getByEmail(email);
 
       if (!user) {
