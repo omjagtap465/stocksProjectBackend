@@ -5,7 +5,9 @@ import { ApiError } from "../utils/api_errors.js";
 const { JWT } = config;
 const verifyToken = async (req, res, next) => {
   try {
+    console.log(req.headers);
     let bearerHeader = req.headers["authorization"];
+    console.log(bearerHeader);
     const bearerToken = bearerHeader.split(" ")[1];
     if (!bearerToken) {
       return res.json(

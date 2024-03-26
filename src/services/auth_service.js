@@ -16,8 +16,8 @@ class UserService {
     }
     const existedUser = await this.UserRepository.getByEmail(email);
     console.log("Service Layer", existedUser);
-    if (existedUser) {
-      throw new ApiError(409, "User with email or username already exists");
+    if (existedUser !== null && existedUser !== undefined) {
+      return new ApiError(409, "User with email or username already exists");
     }
 
     const hash = await this.beforeCreate(password);
@@ -43,7 +43,6 @@ class UserService {
       if (!(username || email)) {
         throw new ApiError(400, "username or email is required");
       }
-
       const user = await this.UserRepository.getByEmail(email);
 
       if (!user) {
@@ -53,16 +52,6 @@ class UserService {
       const passwordMatch = await this.checkPassword(password, user.password);
       console.log("Password Match", passwordMatch);
 
-      // return res.status(200).json(
-      //   new ApiResponse(
-      //     200,
-      //     {
-      //       user: loggedInUser,
-      //       accessToken,
-      //     },
-      //     "User logged In Successfully"
-      //   )
-      // );
       if (!passwordMatch) {
         console.log("Password Doesnt Match");
         throw { error: "Incorrect Password" };
@@ -72,7 +61,25 @@ class UserService {
         id: user.id,
       });
       console.log(newToken);
-      return newToken;
+      return { newToken, ...user.dataValues };
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getUser(userDataToken) {
+    try {
+      const { user_id } = userDataToken;
+
+      if (!user_id) {
+        throw new ApiError(400, "user_id is required");
+      }
+      const user = await this.UserRepository.getById(user_id);
+
+      if (!user) {
+        throw new ApiError(404, "User does not exist Error in token headers");
+      }
+
+      return user;
     } catch (error) {
       throw error;
     }
@@ -125,3 +132,13 @@ class UserService {
   }
 }
 export { UserService };
+// return res.status(200).json(
+//   new ApiResponse(
+//     200,
+//     {
+//       user: loggedInUser,
+//       accessToken,
+//     },
+//     "User logged In Successfully"
+//   )
+// );

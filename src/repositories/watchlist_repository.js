@@ -45,7 +45,6 @@ class WatchlistRepository {
         where: { watchlist_id: watchlistId },
       });
 
-      console.log("Watchlist Stocks:", watchlistStocks);
       return watchlistStocks;
     } catch (error) {
       console.error("Error finding watchlist stocks:", error);

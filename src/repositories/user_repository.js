@@ -4,16 +4,15 @@ class UserRepository {
   async create(data) {
     try {
       const user = await User.create(data);
-
       return user;
     } catch (error) {
       if (error.name == "SequelizeValidationError") {
-        console.log("Creating New Validation Error");
+        console.log("Creating New Validation Error", error.errors);
         let validationError = new ValidationError(error);
         throw validationError;
       }
-      console.log("Error", error);
-      throw error;
+      console.log("Error in Repository", error);
+      return error;
     }
   }
 

@@ -27,6 +27,7 @@ class WatchlistService {
   async getWatchlist(watchlistData) {
     try {
       const { id } = watchlistData;
+      console.log(id);
       const getWatchlist = await this.WatchlistRepository.getByWatchlistId(id);
       if (!getWatchlist) {
         throw new ApiResponse(400, "Watchlist Data Not Exists");

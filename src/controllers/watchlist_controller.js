@@ -33,6 +33,7 @@ const createWatchlistController = async (req, res) => {
 };
 const getWatchlistController = async (req, res) => {
   try {
+    console.log(req.body);
     const watchlistData = req.body;
     const watchlist = await watchlistService.getWatchlist(watchlistData);
 
